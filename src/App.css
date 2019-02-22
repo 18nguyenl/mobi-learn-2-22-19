@@ -24,7 +24,7 @@
   margin-bottom: 4rem;
 }
 
-.button-list button {
+.button-list .menu-item {
   margin: 1rem 1rem;
   width: 5%;
   height: 3rem;
