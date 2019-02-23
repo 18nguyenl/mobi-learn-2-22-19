@@ -28,10 +28,8 @@ class Pad extends Component {
     this.state = {
       currentBackground: "",
       submissionURL: "",
-      history: [],
-      historyIndex: 0,
     };
-    this.history= []
+    this.history = [];
     this.historyIndex = 1;
   }
 
@@ -58,15 +56,6 @@ class Pad extends Component {
       if (drawing === true) myPath.add(event.point);
     };
 
-    paper.view.onMouseUp = event => {
-      // let background = PIXI.Sprite.from(PIXI.Texture.from(this.paperCanvas));
-      // background.width = this.App.screen.width;
-      // background.height = this.App.screen.height;
-      // this.App.stage.addChild(background);
-      // this.state.history.push(PIXI.Texture.from(this.paperCanvas));
-      // drawing = false;
-    };
-
     paper.view.draw();
   }
 
@@ -74,32 +63,64 @@ class Pad extends Component {
     return (
       <div className="pad-container">
         <div className="button-list">
-          <button className="menu-item" onClick={
-            e => {
-              if(this.historyIndex === 0) {
-                // this.history[0].strokeColor=Color(0, 0, 0, 0);
-                this.history[this.history.length-this.historyIndex].strokeColor='white';
+          <button
+            className="menu-item"
+            onClick={e => {
+              if (this.historyIndex === this.history.length - 1) {
+                this.history[
+                  this.history.length - this.historyIndex
+                ].strokeColor = new Color(0, 0, 0, 0);
+              } else {
+                this.history[
+                  this.history.length - this.historyIndex++
+                ].strokeColor = new Color(0, 0, 0, 0);
               }
-              else {
-                // this.history[this.historyIndex].strokeColor=Color(0,0,0,0)
-                this.history[this.history.length-this.historyIndex++].strokeColor='white'
-                // this.setState()
-              } 
-              console.log(this.history)
-            }
-          }>Undo</button>
-          <button className="menu-item">Redo</button>
-          <button className="menu-item">Clear</button>
-          <a className="menu-item" href={this.state.submissionURL} download="submission.png">
-            <button
-              onClick={e => {
-                this.setState({submissionURL: this.paperCanvas.toDataURL()});
-                console.log(this.state.submissionURL)
-              }}
+            }}
+          >
+            Undo
+          </button>
+          <button
+            className="menu-item"
+            onClick={e => {
+              if (this.historyIndex === 1) {
+                this.history[
+                  this.history.length - this.historyIndex
+                ].strokeColor = new Color(0, 0, 0, 1);
+              } else {
+                this.history[
+                  this.history.length - --this.historyIndex
+                ].strokeColor = new Color(0, 0, 0, 1);
+              }
+            }}
+          >
+            Redo
+          </button>
+          <button
+            className="menu-item"
+            onClick={e => {
+              this.history.map(ee => {
+                return ee.remove();
+              });
+            }}
+          >
+            Clear
+          </button>
+
+          <button
+            className="menu-item"
+            onClick={e => {
+              this.setState({ submissionURL: this.paperCanvas.toDataURL() });
+              console.log(this.state.submissionURL);
+            }}
+          >
+            <a
+              className="menu-item"
+              href={this.state.submissionURL}
+              download="submission.png"
             >
               Submit
-            </button>
-          </a>
+            </a>
+          </button>
         </div>
         <div style={Styles.PadContainer}>
           <div className="pad-box">
